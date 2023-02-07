@@ -3,10 +3,10 @@
 
     public class GetNewReleaseResult
     {
-        public Albums albums { get; set; }
+        public Album albums { get; set; }
     }
 
-    public class Albums
+    public class Album
     {
         public string href { get; set; }
         public Item[] items { get; set; }

@@ -1,4 +1,5 @@
-﻿using ConsumeSpotifyWebAPI.Models;
+﻿using ConsumeSpotifyWebAPI.DAL;
+using ConsumeSpotifyWebAPI.Models;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -8,10 +9,11 @@ namespace ConsumeSpotifyWebAPI.Services
     public class SpotifyAccountService : ISpotifyAccountService
     {
         private readonly HttpClient _httpClient;
-
-        public SpotifyAccountService(HttpClient httpClient)
+        private readonly ReleaseContext _context;
+        public SpotifyAccountService(HttpClient httpClient, ReleaseContext context)
         {
             _httpClient = httpClient;
+            _context = context;
         }
         public async Task<string> GetToken(string clientId, string clientSecret)
         {
@@ -26,7 +28,6 @@ namespace ConsumeSpotifyWebAPI.Services
             response.EnsureSuccessStatusCode();
             using var responseStream = await response.Content.ReadAsStreamAsync();
             var authResult = await JsonSerializer.DeserializeAsync<AuthResult>(responseStream);
-
             return authResult.access_token;
         }
     }
